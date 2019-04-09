@@ -1,5 +1,4 @@
-export default class Reimbursement
-{
+export default class Reimbursement {
     reimbursementId: number; // primary key
     author: number;  // foreign key -> User, not null
     amount: number;  // not null

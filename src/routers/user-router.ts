@@ -49,7 +49,7 @@ userRouter.post('', (req, res) => {
 
 userRouter.patch('', (req, res) => {
     const { body } = req;
-    const theUser = theUsers.find(user => { return user.userId === body.userId });
+    const theUser = theUsers.find(user => { return user.userId === body.userId; });
     if (!theUser) {
         res.sendStatus(404);
     }

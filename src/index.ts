@@ -7,7 +7,7 @@ const app = express();
 
 app.use((req, res, next) => {
     next();
-})
+});
 
 app.use(bodyParser.json());
 

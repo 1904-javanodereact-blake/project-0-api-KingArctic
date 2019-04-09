@@ -1,5 +1,5 @@
-import User from "./classes/users";
-import Role from "./classes/role";
+import User from './classes/users';
+import Role from './classes/role';
 
 export let theUsers: User[] =
     [
