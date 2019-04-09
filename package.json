@@ -1,0 +1,24 @@
+{
+  "name": "project-0-api",
+  "version": "1.0.0",
+  "description": "a web service for spaceships",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "nodemon --exec ts-node src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "C Austin Lyons",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "express-session": "^1.15.6",
+  },
+  "devDependencies": {
+    "@types/express": "^4.16.1",
+    "@types/express-session": "^1.15.12",
+    "nodemon": "^1.18.10",    
+    "ts-node": "^8.0.3",
+    "typescript": "^3.4.2"
+  }
+}

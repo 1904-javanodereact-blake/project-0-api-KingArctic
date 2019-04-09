@@ -1,0 +1,35 @@
+import user from "./classes/users";
+
+export let theUsers : user[] = 
+[
+    new user(),
+    new user(),
+    new user(),
+    new user(),
+    new user(),
+    new user(),
+    new user(),
+    new user(),
+    new user(),
+    new user(),
+    new user(),
+    new user(),
+    new user(),
+    new user(),
+    new user(),
+    new user(),
+    new user(),
+    new user(),
+    new user(),
+    new user(),
+    new user(),
+    new user(),
+    new user(),
+    new user(),
+    new user(),
+    new user(),
+    new user(),
+    new user(),
+    new user(),
+    new user()
+];

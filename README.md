@@ -3,62 +3,56 @@ The Expense Reimbursement System (ERS) will manage the process of reimbursing em
 
 # Models
 
-**User**  
-The User model keeps track of users information.
 ```javascript
-{
-  userId: number, // primary key
-  username: string, // not null, unique
-  password: string, // not null
-  firstName: string, // not null
-  lastName: string, // not null
-  email: string, // not null
-  role: Role // not null
-}
-```
 
-**Role**  
-The Role model is used to track what permissions a user has
-```javascript
-{
-  roleId: number, // primary key
-  role: string // not null, unique
-}
-```
+// **User**  
+// The User model keeps track of users information.
+// {
+//   userId: number, // primary key
+//   username: string, // not null, unique
+//   password: string, // not null
+//   firstName: string, // not null
+//   lastName: string, // not null
+//   email: string, // not null
+//   role: Role // not null
+// }
 
-**Reimbursement**  
-The Reimbursement model is used to represent a single reimbursement that an employee would submit
-```javascript
-{
-  reimbursementId: number, // primary key
-  author: number,  // foreign key -> User, not null
-  amount: number,  // not null
-  dateSubmitted: number, // not null
-  dateResolved: number,
-  description: string, // not null
-  resolver: number, // foreign key -> User
-  status: number, // foreign ey -> ReimbursementStatus, not null
-  type: number // foreign key -> ReimbursementType
-}
-```
+// **Role**  
+// The Role model is used to track what permissions a user has
+// {
+//   roleId: number, // primary key
+//   role: string // not null, unique
+// }
+
+// **Reimbursement**  
+// The Reimbursement model is used to represent a single reimbursement that an employee would submit
+// {
+//   reimbursementId: number, // primary key
+//   author: number,  // foreign key -> User, not null
+//   amount: number,  // not null
+//   dateSubmitted: number, // not null
+//   dateResolved: number,
+//   description: string, // not null
+//   resolver: number, // foreign key -> User
+//   status: number, // foreign ey -> ReimbursementStatus, not null
+//   type: number // foreign key -> ReimbursementType
+// }
 
 
-**ReimbursementStatus**  
-The ReimbursementStatus model is used to track the status of reimbursements. Status possibilities are `Pending`, `Approved`, or `Denied`.
-```javascript
-{
-  statusId: number, // primary key
-  status: string // not null, unique
-}
-```
+// **ReimbursementStatus**  
+// The ReimbursementStatus model is used to track the status of reimbursements. Status possibilities are `Pending`, `Approved`, or `Denied`.
+// {
+//   statusId: number, // primary key
+//   status: string // not null, unique
+// }
 
-**ReimbursementType**  
-The ReimbursementType model is used to track what kind of reimbursement is being submitted. Type possibilities are `Lodging`, `Travel`, `Food`, or `Other`.
-```javascript
-{
-  typeId: number, // primary key
-  type: string, // not null, unique
-}
+// **ReimbursementType**  
+// The ReimbursementType model is used to track what kind of reimbursement is being submitted. Type possibilities are `Lodging`, `Travel`, `Food`, or `Other`.
+// {
+//   typeId: number, // primary key
+//   type: string, // not null, unique
+// }
+
 ```
 
 # Endpoints
