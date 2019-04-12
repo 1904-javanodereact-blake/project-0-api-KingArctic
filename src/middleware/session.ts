@@ -4,8 +4,8 @@ const sess = {
     secret: '42',
     cookie: { secure: false },
     resave: false,
-    saveUninitialized: false
-    // isLoggedIn = false
+    saveUninitialized: false,
+    // isLoggedIn: false
 };
 
 export const sessionMiddleware = session(sess);

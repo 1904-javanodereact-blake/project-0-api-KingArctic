@@ -71,6 +71,7 @@ The Expense Reimbursement System (ERS) will manage the process of reimbursing em
     Occurs if they do not have the appropriate permissions.
 
 ## Available Endpoints
+```javascript
   [POST /login](#login)  
   [GET /users](#find-users)  
   [GET /users/:id](#find-users-by-id)  

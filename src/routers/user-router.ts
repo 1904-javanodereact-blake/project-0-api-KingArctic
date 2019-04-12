@@ -1,50 +1,20 @@
 import express from 'express';
-import User from '../classes/users';
 import { theUsers } from '../classes';
+import { findAllUsers, findUserByID } from '../daos/users.dao';
+import { authorization } from '../middleware/authorization';
 export const userRouter = express.Router();
 
-userRouter.get('', (req, res) => {
-    res.json(theUsers);
+userRouter.get('', authorization([1, 2]), async (req, res) => {
+    res.json(await findAllUsers());
 });
 
-userRouter.post('/login', (req, res) => {
-    const { username, password } = req.body;
-    const theUser = theUsers.find(u => u.username === username && u.password === password);
-
-    if (theUser) {
-        req.session.user = theUser;
-        res.end();
-    }
-    else {
-        res.sendStatus(401);
-    }
-});
-
-userRouter.get('/:id', (req, res) => {
-    const theUser = theUsers.find(user => user.userId === +req.params.id);
-    if (theUser) {
-        res.json(theUser);
-    }
-    else {
-        res.sendStatus(404);
-    }
-});
-
-userRouter.get('/username/:username', (req, res) => {
-    const theUser = theUsers.find(user => user.username === req.params.username);
-    if (theUser) {
-        res.json(theUser);
-    }
-    else {
-        res.sendStatus(404);
-    }
-});
-
-userRouter.post('', (req, res) => {
-    const user: User = new User(req.body);
-    theUsers.push(user);
-    res.status(201);
-    res.send(user);
+userRouter.get('/:id', async (req, res) => {
+    if (req.session.user && req.session.user.roleid == 4 && req.session.user.userid == req.params.id)
+        res.json(await findUserByID(req.params.id));
+    else if (req.session.user && req.session.user.roleid < 4)
+        res.json(await findUserByID(req.params.id));
+    else
+        res.sendStatus(403);
 });
 
 userRouter.patch('', (req, res) => {

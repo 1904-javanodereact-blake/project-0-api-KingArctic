@@ -9,15 +9,34 @@ export default class User {
     email: string; // not null
     role: Role; // not null
 
-    constructor(userId: number = -1, username: string = `No Name`, password: string = `No Password`,
-        firstName: string = `No Name`, lastName: string = `No Name`, email: string = `No Email`, role: Role = new Role(-1, `No Role`)) {
+    constructor(userId: number, username: string, password: string,
+        firstName: string, lastName: string, email: string, role: number) {
         this.userId = userId;
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.role = role;
+        switch (role) {
+            case 0:
+            this.role = new Role(role, 'Undefined');
+            break;
+            case 1:
+            this.role = new Role(role, 'Admin');
+            break;
+            case 2:
+            this.role = new Role(role, 'Teacher');
+            break;
+            case 3:
+            this.role = new Role(role, 'Pro Hero');
+            break;
+            case 4:
+            this.role = new Role(role, 'Student');
+            break;
+            default:
+            this.role = new Role(0, 'Undefined');
+            break;
+        }
     }
 }
 
