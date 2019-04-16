@@ -72,12 +72,14 @@ The Expense Reimbursement System (ERS) will manage the process of reimbursing em
 
 ## Available Endpoints
 ```javascript
-  [POST /login](#login)  
+  [POST /login](#login) 
+  
   [GET /users](#find-users)  
   [GET /users/:id](#find-users-by-id)  
   [PATCH /users](#update-user)  
-  [GET /reimbursements/status/:statusId](#find-reimbursements-by-status)  
-  [GET /reimbursements/author/userId:userId](#find-reimbursements-by-user)  
+
+  [GET /reimbursements/status/:statusId](#find-reimbursements-by-status) 
+  [GET /reimbursements/author/userId:userId](#find-reimbursements-by-user)
   [POST /reimbursements](#submit-reimbursement)  
   [PATCH /reimbursements](#update-reimbursement)  
 

@@ -17,7 +17,7 @@ userRouter.get('/:id', async (req, res) => {
         res.sendStatus(403);
 });
 
-userRouter.patch('', async (req, res) => {
+userRouter.patch('', authorization([1, 2]), async (req, res) => {
     const body = req.body;
     console.log(body);
     const tempUser = new User(body.userid, undefined, undefined, undefined, undefined, undefined, undefined);
