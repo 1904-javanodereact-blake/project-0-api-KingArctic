@@ -1,42 +1,21 @@
-import Role from './role';
-
 export default class User {
-    userId: number; // primary key
-    username: string; // not null, unique
+    userid: number; // primary key
+    heroname: string; // not null, unique
     password: string; // not null
-    firstName: string; // not null
-    lastName: string; // not null
+    firstname: string; // not null
+    lastname: string; // not null
     email: string; // not null
-    role: Role; // not null
+    roleid: number; // not null
 
-    constructor(userId: number, username: string, password: string,
+    constructor(userId: number, heroname: string, password: string,
         firstName: string, lastName: string, email: string, role: number) {
-        this.userId = userId;
-        this.username = username;
+        this.userid = userId;
+        this.heroname = heroname;
         this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.firstname = firstName;
+        this.lastname = lastName;
         this.email = email;
-        switch (role) {
-            case 0:
-            this.role = new Role(role, 'Undefined');
-            break;
-            case 1:
-            this.role = new Role(role, 'Admin');
-            break;
-            case 2:
-            this.role = new Role(role, 'Teacher');
-            break;
-            case 3:
-            this.role = new Role(role, 'Pro Hero');
-            break;
-            case 4:
-            this.role = new Role(role, 'Student');
-            break;
-            default:
-            this.role = new Role(0, 'Undefined');
-            break;
-        }
+        this.roleid = role;
     }
 }
 
