@@ -93,7 +93,7 @@ export async function updateRequest(newRequest: Request) {
             res = await client.query(query, [newRequest.resolver, newRequest.requestId]);
         }
         if (newRequest.status != undefined) {
-            const query = `UPDATE requests SET description = $1 WHERE requestid = $2;`;
+            const query = `UPDATE requests SET status = $1 WHERE requestid = $2;`;
             res = await client.query(query, [newRequest.status, newRequest.requestId]);
         }
         if (newRequest.type != undefined) {
