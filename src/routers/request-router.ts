@@ -1,8 +1,12 @@
 import express from 'express';
 import { authorization } from '../middleware/authorization';
-import { findAllRequestByStatusID, findAllRequestByUserID, addNewRequest, updateRequest } from '../daos/request.dao';
+import { findAllRequests, findAllRequestByStatusID, findAllRequestByUserID, addNewRequest, updateRequest } from '../daos/request.dao';
 import Request from '../classes/request';
 export const requestRouter = express.Router();
+
+requestRouter.get('', authorization([1, 2]), async (req, res) => {
+    res.json(await findAllRequests());
+});
 
 requestRouter.get('/status/:statusId', authorization([1, 2]), async (req, res) => {
     res.json(await findAllRequestByStatusID(req.params.statusId));

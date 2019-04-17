@@ -2,6 +2,22 @@ import { connectionPool } from '.';
 import { PoolClient } from 'pg';
 import Request from '../classes/request';
 
+export async function findAllRequests() {
+    let client: PoolClient;
+    try {
+        client = await connectionPool.connect();
+        await client.query(`set schema 'Heroes';`);
+        const query = `SELECT * FROM requests;`;
+        const res = await client.query(query);
+        return res.rows;
+    } catch (err) {
+        console.log(err);
+        return err;
+    } finally {
+        client && client.release();
+    }
+}
+
 export async function findAllRequestByStatusID(statusid: number) {
     let client: PoolClient;
     try {
