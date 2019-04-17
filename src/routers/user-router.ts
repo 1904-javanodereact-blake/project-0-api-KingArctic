@@ -25,10 +25,19 @@ userRouter.patch('', authorization([1, 2]), async (req, res) => {
             tempUser[field] = body[field];
         }
     }
-    if (!tempUser) {
-        res.sendStatus(404);
+
+    if (tempUser.userid != undefined) {
+        const updateReturn = await updateUser(tempUser);
+
+        if (updateReturn) {
+            res.status(202);
+            res.json(updateReturn);
+        }
+        else {
+            res.sendStatus(400);
+        }
     }
     else {
-        res.json(await updateUser(tempUser));
+        res.sendStatus(400);
     }
 });

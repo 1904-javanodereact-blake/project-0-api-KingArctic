@@ -28,11 +28,15 @@ requestRouter.post('', async (req, res) => {
     tempRequest.status = 1;
     tempRequest.resolver = undefined;
     tempRequest.dateresolved = undefined;
-    if (!tempRequest) {
-        res.sendStatus(404);
+
+    const newReturn = await addNewRequest(tempRequest);
+
+    if (newReturn) {
+        res.status(202);
+        res.json(newReturn);
     }
     else {
-        res.json(await addNewRequest(tempRequest));
+        res.sendStatus(404);
     }
 });
 
@@ -44,10 +48,19 @@ requestRouter.patch('', authorization([1, 2]), async (req, res) => {
             tempRequest[field] = body[field];
         }
     }
-    if (!tempRequest) {
-        res.sendStatus(404);
+
+    if (tempRequest.requestId != undefined) {
+        const updateReturn = await updateRequest(tempRequest);
+
+        if (updateReturn) {
+            res.status(202);
+            res.json(updateReturn);
+        }
+        else {
+            res.sendStatus(400);
+        }
     }
     else {
-        res.json(await updateRequest(tempRequest));
+        res.sendStatus(400);
     }
 });

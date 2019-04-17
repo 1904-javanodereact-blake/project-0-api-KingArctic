@@ -7,8 +7,8 @@ loginRouter.post('', async (req, res) => {
     const temp = (await findUserByUsernameAndPassword(username, password));
     if (temp) {
         req.session.user = temp;
-        res.json(temp);
+        res.sendStatus(200);
     } else {
-        res.sendStatus(401);
+        res.sendStatus(400).send('Invalid Credentials');
     }
 });
