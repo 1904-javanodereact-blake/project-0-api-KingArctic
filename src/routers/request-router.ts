@@ -53,6 +53,8 @@ requestRouter.patch('', authorization([1, 2]), async (req, res) => {
         }
     }
 
+    tempRequest.resolver = req.session.user.userid;
+
     if (tempRequest.requestId != undefined) {
         const updateReturn = await updateRequest(tempRequest);
 
