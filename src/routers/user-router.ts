@@ -4,7 +4,7 @@ import { authorization } from '../middleware/authorization';
 import User from '../classes/users';
 export const userRouter = express.Router();
 
-userRouter.get('', authorization([1, 2]), async (req, res) => {
+userRouter.get('', /* authorization([1, 2]), */ async (req, res) => {
     res.json(await findAllUsers());
 });
 
