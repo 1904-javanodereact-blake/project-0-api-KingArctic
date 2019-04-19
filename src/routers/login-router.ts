@@ -4,6 +4,7 @@ export const loginRouter = express.Router();
 
 loginRouter.post('', async (req, res) => {
     const { username, password } = req.body;
+    console.log(`attempting to login...`);
     const temp = (await findUserByUsernameAndPassword(username, password));
     if (temp) {
         req.session.user = temp;
