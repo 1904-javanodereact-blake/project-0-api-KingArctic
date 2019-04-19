@@ -1,4 +1,5 @@
 import { Pool } from 'pg';
+
 const config = {
     user: process.env['HEROES_DB_USERNAME'],
     host: process.env['HEROES_DB_URL'] || 'localhost',
