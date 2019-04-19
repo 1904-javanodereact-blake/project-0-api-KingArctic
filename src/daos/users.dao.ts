@@ -36,10 +36,12 @@ export async function findUserByUsernameAndPassword(username: string, password: 
     try {
         console.log(`attempting to connect to server...`);
         client = await connectionPool.connect();
+        console.log(`connected...`);
         await client.query(`set schema 'Heroes';`);
         const query = `SELECT * FROM users WHERE heroname = $1 AND password = $2;`;
+        console.log(`searching for user...`);
         const res = await client.query(query, [username, password]);
-        console.log(`succesful login...`);
+        console.log(`search returned...`);
         return res.rows[0];
     } catch (err) {
         console.log(err);
