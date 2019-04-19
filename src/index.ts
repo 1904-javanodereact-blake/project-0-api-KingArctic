@@ -20,3 +20,5 @@ app.use('/users', userRouter);
 app.use('/requests', requestRouter);
 
 app.listen(process.env['HEROES_PORT']);
+
+console.log(`Connected to server`);
