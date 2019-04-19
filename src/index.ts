@@ -21,6 +21,6 @@ app.use('/requests', requestRouter);
 
 
 
-app.listen(process.env['HEROES_PORT'] || 8081);
+app.listen(process.env['SERVER_PORT'] || 8081);
 
 console.log(`Connected to server`);

@@ -4,7 +4,7 @@ const config = {
     host: process.env['HEROES_DB_URL'] || 'localhost',
     database: process.env['HEROES_DB_NAME'] || 'postgres',
     password: process.env['HEROES_DB_PASSWORD'],
-    port: 5432,
+    port: +process.env['DB_PORT'],
     max: 5
 };
 
