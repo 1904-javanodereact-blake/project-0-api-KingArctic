@@ -5,12 +5,17 @@ export const loginRouter = express.Router();
 loginRouter.post('', async (req, res) => {
     const { username, password } = req.body;
     console.log(`attempting to login...`);
-    const temp = (await findUserByUsernameAndPassword(username, password));
-    if (temp) {
-        req.session.user = temp;
-        console.log(`logged in...`);
-        res.sendStatus(200);
-    } else {
-        res.sendStatus(400).send('Invalid Credentials');
+    try {
+        const temp = (await findUserByUsernameAndPassword(username, password));
+        if (temp) {
+            req.session.user = temp;
+            console.log(`logged in...`);
+            res.sendStatus(200);
+        } else {
+            res.sendStatus(400).send('Invalid Credentials');
+        }
+    } catch (err) {
+        console.log(err);
+        res.sendStatus(500);
     }
 });
