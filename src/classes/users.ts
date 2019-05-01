@@ -6,9 +6,10 @@ export default class User {
     lastname: string; // not null
     email: string; // not null
     roleid: number; // not null
+    imageurl: string;
 
     constructor(userId: number, heroname: string, password: string,
-        firstName: string, lastName: string, email: string, role: number) {
+        firstName: string, lastName: string, email: string, role: number, imageurl: string) {
         this.userid = userId;
         this.heroname = heroname;
         this.password = password;
@@ -16,6 +17,7 @@ export default class User {
         this.lastname = lastName;
         this.email = email;
         this.roleid = role;
+        this.imageurl = imageurl;
     }
 }
 

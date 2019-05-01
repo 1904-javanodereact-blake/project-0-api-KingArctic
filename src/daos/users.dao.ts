@@ -7,9 +7,15 @@ export async function findAllUsers() {
     try {
         client = await connectionPool.connect();
         await client.query(`set schema 'Heroes';`);
-        const res = await client.query('SELECT * FROM users ORDER BY userid ASC;');
+        const res = await client.query(`SELECT users.userid, users.heroname, users.password, users.firstname, users.lastname, users.email, ur.rolename as role, users.imageurl
+        FROM users
+        LEFT JOIN userroles ur
+        ON users.roleid = ur.roleid
+        ORDER BY users.userid;`);
+        console.log(res.rows);
         return res.rows;
     } catch (err) {
+        console.log(err);
         return err;
     } finally {
         client && client.release();
@@ -21,11 +27,77 @@ export async function findUserByID(userid: number) {
     try {
         client = await connectionPool.connect();
         await client.query(`set schema 'Heroes';`);
-        const query = `SELECT * FROM users WHERE userid = $1;`;
+        const query = `SELECT users.userid, users.heroname, users.password, users.firstname, users.lastname, users.email, ur.rolename as role, users.imageurl
+        FROM users
+        LEFT JOIN userroles ur
+        ON users.roleid = ur.roleid
+        WHERE users.userid = $1
+        ORDER BY users.userid;`;
         const res = await client.query(query, [userid]);
-        return res.rows[0];
+        return res.rows;
     } catch (err) {
         console.log(err);
+        return err;
+    } finally {
+        client && client.release();
+    }
+}
+
+export async function findUserByName(username: string) {
+    let client: PoolClient;
+    try {
+        client = await connectionPool.connect();
+        await client.query(`set schema 'Heroes';`);
+        let query = `SELECT users.userid, users.heroname, users.password, users.firstname, users.lastname, users.email, ur.rolename as role, users.imageurl
+        FROM users
+        LEFT JOIN userroles ur
+        ON users.roleid = ur.roleid
+        WHERE concat(users.firstname, ' ', users.lastname) = $1
+        ORDER BY users.userid;`;
+        let res = await client.query(query, [username]);
+        if (res.rows.length === 0) {
+            query = `SELECT users.userid, users.heroname, users.password, users.firstname, users.lastname, users.email, ur.rolename as role, users.imageurl
+        FROM users
+        LEFT JOIN userroles ur
+        ON users.roleid = ur.roleid
+        WHERE users.firstname = $1
+        ORDER BY users.userid;`;
+            res = await client.query(query, [username]);
+            if (res.rows.length === 0) {
+                query = `SELECT users.userid, users.heroname, users.password, users.firstname, users.lastname, users.email, ur.rolename as role, users.imageurl
+            FROM users
+            LEFT JOIN userroles ur
+            ON users.roleid = ur.roleid
+            WHERE users.lastname = $1
+            ORDER BY users.userid;`;
+                res = await client.query(query, [username]);
+            }
+        }
+        return res.rows;
+    } catch (err) {
+        console.log(err);
+        return err;
+    } finally {
+        client && client.release();
+    }
+}
+
+export async function findUserByHeroName(username: string) {
+    let client: PoolClient;
+    try {
+        client = await connectionPool.connect();
+        await client.query(`set schema 'Heroes';`);
+        const query = `SELECT users.userid, users.heroname, users.password, users.firstname, users.lastname, users.email, ur.rolename as role, users.imageurl
+        FROM users
+        LEFT JOIN userroles ur
+        ON users.roleid = ur.roleid
+        WHERE users.heroname = $1
+        ORDER BY users.userid;`;
+        const res = await client.query(query, [username]);
+        return res.rows;
+    } catch (err) {
+        console.log(err);
+        return err;
     } finally {
         client && client.release();
     }
@@ -38,13 +110,19 @@ export async function findUserByUsernameAndPassword(username: string, password: 
         client = await connectionPool.connect();
         console.log(`connected...`);
         await client.query(`set schema 'Heroes';`);
-        const query = `SELECT * FROM users WHERE heroname = $1 AND password = $2;`;
+        const query = `SELECT users.userid, users.heroname, users.password, users.firstname, users.lastname, users.email, ur.rolename as role, users.imageurl
+        FROM users
+        LEFT JOIN userroles ur
+        ON users.roleid = ur.roleid
+        WHERE users.heroname = $1 AND users.password = $2
+        ORDER BY users.userid;`;
         console.log(`searching for user...`);
         const res = await client.query(query, [username, password]);
         console.log(`search returned...`);
-        return res.rows[0];
+        return res.rows;
     } catch (err) {
         console.log(err);
+        return err;
     } finally {
         client && client.release();
     }
@@ -76,11 +154,20 @@ export async function updateUser(user: User) {
             const query = `UPDATE users SET email = $1 WHERE userid = $2;`;
             res = await client.query(query, [user.email, user.userid]);
         }
+        if (user.roleid != undefined) {
+            const query = `UPDATE users SET roleid = $1 WHERE userid = $2;`;
+            res = await client.query(query, [user.roleid, user.userid]);
+        }
+        if (user.imageurl != undefined) {
+            const query = `UPDATE users SET imageurl = $1 WHERE userid = $2;`;
+            res = await client.query(query, [user.imageurl, user.userid]);
+        }
         const query = `SELECT * FROM users WHERE userid = $1;`;
         res = await client.query(query, [user.userid]);
-        return res.rows[0];
+        return res.rows;
     } catch (err) {
         console.log(err);
+        return err;
     } finally {
         client && client.release();
     }

@@ -5,10 +5,26 @@ import Request from '../classes/request';
 export async function findAllRequests() {
     let client: PoolClient;
     try {
+        console.log('Trying to connect');
         client = await connectionPool.connect();
+        console.log('Trying to set schema');
         await client.query(`set schema 'Heroes';`);
-        const query = `SELECT * FROM requests;`;
+        const query = `SELECT requests.requestid, a.firstname as authorfirst, a.lastname as authorlast, requests.datesubmitted, requests.dateresolved,
+        requests.description, r.firstname as resolverfirst, r.lastname as resolverlast, rs.status, rt.type, rt.imageurl
+       FROM requests
+       LEFT JOIN users a
+       ON requests.author = a.userid
+       LEFT JOIN users r
+       ON requests.resolver = r.userid
+       LEFT JOIN requeststatus rs
+       ON requests.status = rs.statusid
+       LEFT JOIN requesttype rt
+       ON requests.type = rt.typeid
+       ORDER BY requests.requestid;`;
+        console.log('Trying to retrieve requests');
         const res = await client.query(query);
+        console.log('Requests retrieved');
+        console.log(res.rows);
         return res.rows;
     } catch (err) {
         console.log(err);
@@ -23,8 +39,48 @@ export async function findAllRequestByStatusID(statusid: number) {
     try {
         client = await connectionPool.connect();
         await client.query(`set schema 'Heroes';`);
-        const query = `SELECT * FROM requests WHERE status = $1;`;
+        const query = `SELECT requests.requestid, a.firstname as authorfirst, a.lastname as authorlast, requests.datesubmitted, requests.dateresolved,
+        requests.description, r.firstname as resolverfirst, r.lastname as resolverlast, rs.status, rt.type, rt.imageurl
+       FROM requests
+       LEFT JOIN users a
+       ON requests.author = a.userid
+       LEFT JOIN users r
+       ON requests.resolver = r.userid
+       LEFT JOIN requeststatus rs
+       ON requests.status = rs.statusid
+       LEFT JOIN requesttype rt
+       ON requests.type = rt.typeid
+       WHERE requests.status = $1
+       ORDER BY requests.requestid;`;
         const res = await client.query(query, [statusid]);
+        return res.rows;
+    } catch (err) {
+        console.log(err);
+        return err;
+    } finally {
+        client && client.release();
+    }
+}
+
+export async function findAllRequestByStatusType(status: string) {
+    let client: PoolClient;
+    try {
+        client = await connectionPool.connect();
+        await client.query(`set schema 'Heroes';`);
+        const query = `SELECT requests.requestid, a.firstname as authorfirst, a.lastname as authorlast, requests.datesubmitted, requests.dateresolved,
+        requests.description, r.firstname as resolverfirst, r.lastname as resolverlast, rs.status, rt.type, rt.imageurl
+       FROM requests
+       LEFT JOIN users a
+       ON requests.author = a.userid
+       LEFT JOIN users r
+       ON requests.resolver = r.userid
+       LEFT JOIN requeststatus rs
+       ON requests.status = rs.statusid
+       LEFT JOIN requesttype rt
+       ON requests.type = rt.typeid
+       WHERE rs.status = $1
+       ORDER BY requests.requestid;`;
+        const res = await client.query(query, [status]);
         return res.rows;
     } catch (err) {
         console.log(err);
@@ -39,8 +95,50 @@ export async function findAllRequestByUserID(userId: number) {
     try {
         client = await connectionPool.connect();
         await client.query(`set schema 'Heroes';`);
-        const query = `SELECT * FROM requests WHERE author = $1;`;
+        const query = `SELECT requests.requestid, a.firstname as authorfirst, a.lastname as authorlast, requests.datesubmitted, requests.dateresolved,
+        requests.description, r.firstname as resolverfirst, r.lastname as resolverlast, rs.status, rt.type, rt.imageurl
+       FROM requests
+       LEFT JOIN users a
+       ON requests.author = a.userid
+       LEFT JOIN users r
+       ON requests.resolver = r.userid
+       LEFT JOIN requeststatus rs
+       ON requests.status = rs.statusid
+       LEFT JOIN requesttype rt
+       ON requests.type = rt.typeid
+        WHERE requests.author = $1
+        ORDER BY requests.requestid;`;
         const res = await client.query(query, [userId]);
+        console.log(res.rows);
+        return res.rows;
+    } catch (err) {
+        console.log(err);
+        return err;
+    } finally {
+        client && client.release();
+    }
+}
+
+export async function findAllRequestByUsersName(username: string) {
+    let client: PoolClient;
+    try {
+        client = await connectionPool.connect();
+        await client.query(`set schema 'Heroes';`);
+        const query = `SELECT requests.requestid, a.firstname as authorfirst, a.lastname as authorlast, requests.datesubmitted, requests.dateresolved,
+        requests.description, r.firstname as resolverfirst, r.lastname as resolverlast, rs.status, rt.type, rt.imageurl
+       FROM requests
+       LEFT JOIN users a
+       ON requests.author = a.userid
+       LEFT JOIN users r
+       ON requests.resolver = r.userid
+       LEFT JOIN requeststatus rs
+       ON requests.status = rs.statusid
+       LEFT JOIN requesttype rt
+       ON requests.type = rt.typeid
+       WHERE concat(a.firstname, ' ', a.lastname) = $1
+        ORDER BY requests.requestid;`;
+        const res = await client.query(query, [username]);
+        console.log(res.rows);
         return res.rows;
     } catch (err) {
         console.log(err);
