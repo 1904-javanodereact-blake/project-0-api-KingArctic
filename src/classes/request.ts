@@ -7,8 +7,9 @@ export default class Request {
     resolver: number; // foreign key -> User
     status: number; // foreign key -> ReimbursementStatus, not null
     type: number; // foreign key -> ReimbursementType
+    imageurl: string;
 
-    constructor(requestid: number, author: number, datesubmitted: number, dateresolved: number, description: string, resolver: number, status: number, type: number) {
+    constructor(requestid: number, author: number, datesubmitted: number, dateresolved: number, description: string, resolver: number, status: number, type: number, imageurl: string) {
         this.requestId = requestid;
         this.author = author;
         this.datesubmitted = datesubmitted;
@@ -17,5 +18,6 @@ export default class Request {
         this.resolver = resolver;
         this.status = status;
         this.type = type;
+        this.imageurl = imageurl;
     }
 }

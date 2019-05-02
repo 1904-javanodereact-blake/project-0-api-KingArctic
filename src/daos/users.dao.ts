@@ -12,7 +12,6 @@ export async function findAllUsers() {
         LEFT JOIN userroles ur
         ON users.roleid = ur.roleid
         ORDER BY users.userid;`);
-        console.log(res.rows);
         return res.rows;
     } catch (err) {
         console.log(err);
@@ -106,9 +105,7 @@ export async function findUserByHeroName(username: string) {
 export async function findUserByUsernameAndPassword(username: string, password: string) {
     let client: PoolClient;
     try {
-        console.log(`attempting to connect to server...`);
         client = await connectionPool.connect();
-        console.log(`connected...`);
         await client.query(`set schema 'Heroes';`);
         const query = `SELECT users.userid, users.heroname, users.password, users.firstname, users.lastname, users.email, ur.rolename as role, users.imageurl
         FROM users
@@ -116,9 +113,7 @@ export async function findUserByUsernameAndPassword(username: string, password: 
         ON users.roleid = ur.roleid
         WHERE users.heroname = $1 AND users.password = $2
         ORDER BY users.userid;`;
-        console.log(`searching for user...`);
         const res = await client.query(query, [username, password]);
-        console.log(`search returned...`);
         return res.rows;
     } catch (err) {
         console.log(err);

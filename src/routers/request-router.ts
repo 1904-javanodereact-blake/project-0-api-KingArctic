@@ -39,7 +39,7 @@ requestRouter.get('/author/name/:name', async (req, res) => {
 
 requestRouter.post('', async (req, res) => {
     const body = req.body;
-    const tempRequest = new Request(undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined);
+    const tempRequest = new Request(undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined);
     for (const field in tempRequest) {
         if (body[field] != undefined) {
             tempRequest[field] = body[field];
@@ -62,7 +62,7 @@ requestRouter.post('', async (req, res) => {
 
 requestRouter.patch('', /*  authorization([1, 2]), */ async (req, res) => {
     const body = req.body;
-    const tempRequest = new Request(body.requestid, undefined, undefined, undefined, undefined, undefined, undefined, undefined);
+    const tempRequest = new Request(body.requestid, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined);
     for (const field in tempRequest) {
         if (body[field] != undefined) {
             tempRequest[field] = body[field];

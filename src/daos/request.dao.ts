@@ -9,7 +9,7 @@ export async function findAllRequests() {
         client = await connectionPool.connect();
         console.log('Trying to set schema');
         await client.query(`set schema 'Heroes';`);
-        const query = `SELECT requests.requestid, a.firstname as authorfirst, a.lastname as authorlast, requests.datesubmitted, requests.dateresolved,
+        const query = `SELECT requests.requestid, a.userid as authorid, a.firstname as authorfirst, a.lastname as authorlast, requests.datesubmitted, requests.dateresolved,
         requests.description, r.firstname as resolverfirst, r.lastname as resolverlast, rs.status, rt.type, rt.imageurl
        FROM requests
        LEFT JOIN users a
@@ -39,7 +39,7 @@ export async function findAllRequestByStatusID(statusid: number) {
     try {
         client = await connectionPool.connect();
         await client.query(`set schema 'Heroes';`);
-        const query = `SELECT requests.requestid, a.firstname as authorfirst, a.lastname as authorlast, requests.datesubmitted, requests.dateresolved,
+        const query = `SELECT requests.requestid, a.userid as authorid, a.firstname as authorfirst, a.lastname as authorlast, requests.datesubmitted, requests.dateresolved,
         requests.description, r.firstname as resolverfirst, r.lastname as resolverlast, rs.status, rt.type, rt.imageurl
        FROM requests
        LEFT JOIN users a
@@ -67,7 +67,7 @@ export async function findAllRequestByStatusType(status: string) {
     try {
         client = await connectionPool.connect();
         await client.query(`set schema 'Heroes';`);
-        const query = `SELECT requests.requestid, a.firstname as authorfirst, a.lastname as authorlast, requests.datesubmitted, requests.dateresolved,
+        const query = `SELECT requests.requestid, a.userid as authorid, a.firstname as authorfirst, a.lastname as authorlast, requests.datesubmitted, requests.dateresolved,
         requests.description, r.firstname as resolverfirst, r.lastname as resolverlast, rs.status, rt.type, rt.imageurl
        FROM requests
        LEFT JOIN users a
@@ -95,7 +95,7 @@ export async function findAllRequestByUserID(userId: number) {
     try {
         client = await connectionPool.connect();
         await client.query(`set schema 'Heroes';`);
-        const query = `SELECT requests.requestid, a.firstname as authorfirst, a.lastname as authorlast, requests.datesubmitted, requests.dateresolved,
+        const query = `SELECT requests.requestid, a.userid as authorid, a.firstname as authorfirst, a.lastname as authorlast, requests.datesubmitted, requests.dateresolved,
         requests.description, r.firstname as resolverfirst, r.lastname as resolverlast, rs.status, rt.type, rt.imageurl
        FROM requests
        LEFT JOIN users a
@@ -124,7 +124,7 @@ export async function findAllRequestByUsersName(username: string) {
     try {
         client = await connectionPool.connect();
         await client.query(`set schema 'Heroes';`);
-        const query = `SELECT requests.requestid, a.firstname as authorfirst, a.lastname as authorlast, requests.datesubmitted, requests.dateresolved,
+        const query = `SELECT requests.requestid, a.userid as authorid, a.firstname as authorfirst, a.lastname as authorlast, requests.datesubmitted, requests.dateresolved,
         requests.description, r.firstname as resolverfirst, r.lastname as resolverlast, rs.status, rt.type, rt.imageurl
        FROM requests
        LEFT JOIN users a

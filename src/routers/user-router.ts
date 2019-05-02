@@ -1,7 +1,7 @@
 import express from 'express';
 import { findAllUsers, findUserByID, updateUser, findUserByName, findUserByHeroName } from '../daos/users.dao';
 /* import { authorization } from '../middleware/authorization'; */
-import User from '../classes/users';
+ import User from '../classes/users';
 export const userRouter = express.Router();
 
 userRouter.get('', /* authorization([1, 2]), */ async (req, res) => {
@@ -44,6 +44,7 @@ userRouter.get('/sessionuser', async (req, res) => {
 
 userRouter.patch('', /* authorization([1, 2]),  */async (req, res) => {
     const body = req.body;
+    console.log(body);
     const tempUser = new User(body.userid, undefined, undefined, undefined, undefined, undefined, undefined, undefined);
     for (const field in tempUser) {
         if (body[field] != undefined) {
