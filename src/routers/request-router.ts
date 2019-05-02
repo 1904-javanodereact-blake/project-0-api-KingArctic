@@ -19,22 +19,22 @@ requestRouter.get('/status/type/:type', /* authorization([1, 2]), */ async (req,
 
 requestRouter.get('/author/id/:id', async (req, res) => {
     console.log('finding request by user');
-/*     if (req.session.user && req.session.user.roleid == 4 && req.session.user.userid == req.params.userId)
-        res.json(await findAllRequestByUserID(req.params.userId));
-    else if (req.session.user && req.session.user.roleid < 3) */
-        res.json(await findAllRequestByUserID(req.params.id));
-/*     else
-        res.sendStatus(403); */
+    /*     if (req.session.user && req.session.user.roleid == 4 && req.session.user.userid == req.params.userId)
+            res.json(await findAllRequestByUserID(req.params.userId));
+        else if (req.session.user && req.session.user.roleid < 3) */
+    res.json(await findAllRequestByUserID(req.params.id));
+    /*     else
+            res.sendStatus(403); */
 });
 
 requestRouter.get('/author/name/:name', async (req, res) => {
     console.log('finding request by user');
-/*     if (req.session.user && req.session.user.roleid == 4 && req.session.user.userid == req.params.userId)
-        res.json(await findAllRequestByUsersName(req.params.name));
-    else if (req.session.user && req.session.user.roleid < 3) */
-        res.json(await findAllRequestByUsersName(req.params.name));
-/*     else
-        res.sendStatus(403); */
+    /*     if (req.session.user && req.session.user.roleid == 4 && req.session.user.userid == req.params.userId)
+            res.json(await findAllRequestByUsersName(req.params.name));
+        else if (req.session.user && req.session.user.roleid < 3) */
+    res.json(await findAllRequestByUsersName(req.params.name));
+    /*     else
+            res.sendStatus(403); */
 });
 
 requestRouter.post('', async (req, res) => {
@@ -69,7 +69,10 @@ requestRouter.patch('', /*  authorization([1, 2]), */ async (req, res) => {
         }
     }
 
-    tempRequest.resolver = req.session.user.userid;
+    if (tempRequest.status === 2 || tempRequest.status === 3) {
+        tempRequest.resolver = req.session.user.userid;
+        tempRequest.dateresolved = new Date();
+    }
 
     if (tempRequest.requestId != undefined) {
         const updateReturn = await updateRequest(tempRequest);
