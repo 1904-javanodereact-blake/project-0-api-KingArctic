@@ -45,9 +45,14 @@ requestRouter.post('', async (req, res) => {
             tempRequest[field] = body[field];
         }
     }
+    console.log(req.session.user);
+
+    tempRequest.author = req.session.user.userid;
     tempRequest.status = 1;
     tempRequest.resolver = undefined;
     tempRequest.dateresolved = undefined;
+
+    console.log(tempRequest);
 
     const newReturn = await addNewRequest(tempRequest);
 

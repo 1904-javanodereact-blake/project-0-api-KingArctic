@@ -5,9 +5,7 @@ import Request from '../classes/request';
 export async function findAllRequests() {
     let client: PoolClient;
     try {
-        console.log('Trying to connect');
         client = await connectionPool.connect();
-        console.log('Trying to set schema');
         await client.query(`set schema 'Heroes';`);
         const query = `SELECT requests.requestid, a.userid as authorid, a.firstname as authorfirst, a.lastname as authorlast, requests.datesubmitted, requests.dateresolved,
         requests.description, r.firstname as resolverfirst, r.lastname as resolverlast, rs.status, rt.type, rt.imageurl
@@ -21,10 +19,7 @@ export async function findAllRequests() {
        LEFT JOIN requesttype rt
        ON requests.type = rt.typeid
        ORDER BY requests.requestid;`;
-        console.log('Trying to retrieve requests');
         const res = await client.query(query);
-        console.log('Requests retrieved');
-        console.log(res.rows);
         return res.rows;
     } catch (err) {
         console.log(err);
@@ -109,7 +104,6 @@ export async function findAllRequestByUserID(userId: number) {
         WHERE requests.author = $1
         ORDER BY requests.requestid;`;
         const res = await client.query(query, [userId]);
-        console.log(res.rows);
         return res.rows;
     } catch (err) {
         console.log(err);
@@ -138,7 +132,6 @@ export async function findAllRequestByUsersName(username: string) {
        WHERE concat(a.firstname, ' ', a.lastname) = $1
         ORDER BY requests.requestid;`;
         const res = await client.query(query, [username]);
-        console.log(res.rows);
         return res.rows;
     } catch (err) {
         console.log(err);
@@ -153,8 +146,8 @@ export async function addNewRequest(newRequest: Request) {
     try {
         client = await connectionPool.connect();
         await client.query(`set schema 'Heroes';`);
-        const query = `INSERT INTO requests (author, datesubmitted, dateresolved, description, resolver, status, type) VALUES ($1, $2, $3, $4, $5, $6, $7);`;
-        const res = await client.query(query, [newRequest.author, newRequest.datesubmitted, newRequest.dateresolved, newRequest.description, newRequest.resolver, newRequest.status, newRequest.type]);
+        const query = `INSERT INTO requests (author, datesubmitted,  description, status, type) VALUES ($1, $2, $3, $4, $5);`;
+        const res = await client.query(query, [newRequest.author, newRequest.datesubmitted,  newRequest.description, newRequest.status, newRequest.type]);
         return res.rows;
     } catch (err) {
         console.log(err);

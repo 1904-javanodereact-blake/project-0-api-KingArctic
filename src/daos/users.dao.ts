@@ -114,7 +114,7 @@ export async function findUserByUsernameAndPassword(username: string, password: 
         WHERE users.heroname = $1 AND users.password = $2
         ORDER BY users.userid;`;
         const res = await client.query(query, [username, password]);
-        return res.rows;
+        return res.rows[0];
     } catch (err) {
         console.log(err);
         return err;
