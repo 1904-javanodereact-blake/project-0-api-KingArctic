@@ -1,12 +1,11 @@
 import express from 'express';
 /* import { authorization } from '../middleware/authorization'; */
-import { findAllRequests, findAllRequestByStatusID, findAllRequestByUserID, addNewRequest, updateRequest, findAllRequestByUsersName, findAllRequestByStatusType } from '../daos/request.dao';
+import { findAllRequests, findAllRequestByStatusID, findAllRequestByUserID, addNewRequest, updateRequest, findAllRequestByUsersName, findAllRequestByStatusType, findAllRequestByUserIDAndStatus } from '../daos/request.dao';
 import Request from '../classes/request';
 export const requestRouter = express.Router();
 
 requestRouter.get('', /* authorization([1, 2]),  */async (req, res) => {
     res.json(await findAllRequests());
-    console.log('Getting requests....');
 });
 
 requestRouter.get('/status/id/:id', /* authorization([1, 2]), */ async (req, res) => {
@@ -18,7 +17,6 @@ requestRouter.get('/status/type/:type', /* authorization([1, 2]), */ async (req,
 });
 
 requestRouter.get('/author/id/:id', async (req, res) => {
-    console.log('finding request by user');
     /*     if (req.session.user && req.session.user.roleid == 4 && req.session.user.userid == req.params.userId)
             res.json(await findAllRequestByUserID(req.params.userId));
         else if (req.session.user && req.session.user.roleid < 3) */
@@ -27,8 +25,16 @@ requestRouter.get('/author/id/:id', async (req, res) => {
             res.sendStatus(403); */
 });
 
+requestRouter.get('/author/id/:id/status/:status', async (req, res) => {
+    /*     if (req.session.user && req.session.user.roleid == 4 && req.session.user.userid == req.params.userId)
+            res.json(await findAllRequestByUserID(req.params.userId));
+        else if (req.session.user && req.session.user.roleid < 3) */
+    res.json(await findAllRequestByUserIDAndStatus(req.params.id, req.params.status));
+    /*     else
+            res.sendStatus(403); */
+});
+
 requestRouter.get('/author/name/:name', async (req, res) => {
-    console.log('finding request by user');
     /*     if (req.session.user && req.session.user.roleid == 4 && req.session.user.userid == req.params.userId)
             res.json(await findAllRequestByUsersName(req.params.name));
         else if (req.session.user && req.session.user.roleid < 3) */
@@ -73,6 +79,10 @@ requestRouter.patch('', /*  authorization([1, 2]), */ async (req, res) => {
             tempRequest[field] = body[field];
         }
     }
+    // const tempDate = new Date();
+    // const fixedDate = `${tempDate.getFullYear()}-${tempDate.getUTCMonth()}-${tempDate.getUTCDay()}`;
+
+    // console.log(fixedDate);
 
     if (tempRequest.status === 2 || tempRequest.status === 3) {
         tempRequest.resolver = req.session.user.userid;

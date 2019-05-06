@@ -113,6 +113,34 @@ export async function findAllRequestByUserID(userId: number) {
     }
 }
 
+export async function findAllRequestByUserIDAndStatus(userId: number, status: string) {
+    let client: PoolClient;
+    try {
+        client = await connectionPool.connect();
+        await client.query(`set schema 'Heroes';`);
+        const query = `SELECT requests.requestid, a.userid as authorid, a.firstname as authorfirst, a.lastname as authorlast, requests.datesubmitted, requests.dateresolved,
+        requests.description, r.firstname as resolverfirst, r.lastname as resolverlast, rs.status, rt.type, rt.imageurl
+       FROM requests
+       LEFT JOIN users a
+       ON requests.author = a.userid
+       LEFT JOIN users r
+       ON requests.resolver = r.userid
+       LEFT JOIN requeststatus rs
+       ON requests.status = rs.statusid
+       LEFT JOIN requesttype rt
+       ON requests.type = rt.typeid
+        WHERE requests.author = $1 AND rs.status = $2
+        ORDER BY requests.requestid;`;
+        const res = await client.query(query, [userId, status]);
+        return res.rows;
+    } catch (err) {
+        console.log(err);
+        return err;
+    } finally {
+        client && client.release();
+    }
+}
+
 export async function findAllRequestByUsersName(username: string) {
     let client: PoolClient;
     try {

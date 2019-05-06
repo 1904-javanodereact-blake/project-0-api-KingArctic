@@ -102,6 +102,48 @@ export async function findUserByHeroName(username: string) {
     }
 }
 
+export async function findUserByRoleName(rolename: string) {
+    let client: PoolClient;
+    try {
+        client = await connectionPool.connect();
+        await client.query(`set schema 'Heroes';`);
+        const query = `SELECT users.userid, users.heroname, users.password, users.firstname, users.lastname, users.email, ur.rolename as role, users.imageurl
+        FROM users
+        LEFT JOIN userroles ur
+        ON users.roleid = ur.roleid
+        WHERE ur.rolename = $1
+        ORDER BY users.userid;`;
+        const res = await client.query(query, [rolename]);
+        return res.rows;
+    } catch (err) {
+        console.log(err);
+        return err;
+    } finally {
+        client && client.release();
+    }
+}
+
+export async function findUserByRoleID(roleid: number) {
+    let client: PoolClient;
+    try {
+        client = await connectionPool.connect();
+        await client.query(`set schema 'Heroes';`);
+        const query = `SELECT users.userid, users.heroname, users.password, users.firstname, users.lastname, users.email, ur.rolename as role, users.imageurl
+        FROM users
+        LEFT JOIN userroles ur
+        ON users.roleid = ur.roleid
+        WHERE ur.roleid = $1
+        ORDER BY users.userid;`;
+        const res = await client.query(query, [roleid]);
+        return res.rows;
+    } catch (err) {
+        console.log(err);
+        return err;
+    } finally {
+        client && client.release();
+    }
+}
+
 export async function findUserByUsernameAndPassword(username: string, password: string) {
     let client: PoolClient;
     try {
@@ -149,9 +191,9 @@ export async function updateUser(user: User) {
             const query = `UPDATE users SET email = $1 WHERE userid = $2;`;
             res = await client.query(query, [user.email, user.userid]);
         }
-        if (user.roleid != undefined) {
+        if (user.role != undefined) {
             const query = `UPDATE users SET roleid = $1 WHERE userid = $2;`;
-            res = await client.query(query, [user.roleid, user.userid]);
+            res = await client.query(query, [user.role, user.userid]);
         }
         if (user.imageurl != undefined) {
             const query = `UPDATE users SET imageurl = $1 WHERE userid = $2;`;
